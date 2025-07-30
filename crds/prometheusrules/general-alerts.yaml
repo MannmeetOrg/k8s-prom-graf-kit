@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: general-alerts
+  labels:
+    role: alert-rules
+spec:
+  groups:
+    - name: kubernetes.rules
+      rules:
+        - alert: KubeAPIDown
+          expr: up{job="kube-apiserver"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Kubernetes API server is down"
+            description: "Kubernetes API server has been down for more than 5 minutes."
+        - alert: NodeHighCPU
+          expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Node CPU usage is high"
+            description: "Node CPU usage is above 90% for more than 2 minutes."

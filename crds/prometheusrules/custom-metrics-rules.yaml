@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-metrics-rules
+  labels:
+    role: alert-rules
+spec:
+  groups:
+    - name: app.rules
+      rules:
+        - alert: PodRestartSpike
+          expr: increase(kube_pod_container_status_restarts_total[5m]) > 3
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod Restart Spike"
+            description: "Pod is restarting more than 3 times in 5 minutes."
