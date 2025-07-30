@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": 15760,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Pod Restarts",
+      "targets": [
+        {
+          "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod=~\"$pod\"}[5m])",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus"
+    }
+  ],
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": ["kubernetes", "pods"],
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "label": "Namespace",
+        "query": "label_values(kube_pod_info, namespace)",
+        "type": "query",
+        "datasource": "Prometheus"
+      },
+      {
+        "name": "pod",
+        "label": "Pod",
+        "query": "label_values(kube_pod_info{namespace=\"$namespace\"}, pod)",
+        "type": "query",
+        "datasource": "Prometheus"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "title": "Pod Health Overview",
+  "version": 1
+}

@@ -1,0 +1,14 @@
+apiVersion: 1
+groups:
+  - name: default
+    intervalSeconds: 30
+    rules:
+      - uid: "PodRestartSpike"
+        title: "Pod Restart Spike"
+        condition: "avg(kube_pod_container_status_restarts_total) > 3"
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: "prometheus"
