@@ -3,7 +3,7 @@
 
 PROMETHEUS_URL=http://localhost:9090
 SNAPSHOT_DIR="/tmp/prometheus-snapshots"
-S3_BUCKET="your-s3-bucket-name"
+S3_BUCKET="k8s-prom-graf-kit"
 
 mkdir -p $SNAPSHOT_DIR
 
